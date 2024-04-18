@@ -47,7 +47,7 @@ do_precondition_checks () {
 
   # Check the size of SD-Card
   echo "$(timestamp) $0: Checking the size of SD-Card."
-  local SD_CARD_SIZE=$(lsblk -b -o SIZE /dev/mmcblk0 | tail -n 1)
+  local SD_CARD_SIZE=$(lsblk -b -o SIZE,TYPE /dev/mmcblk0 | grep "disk" | awk '{print $1}')
   SD_CARD_SIZE_GIGABYTES=$((SD_CARD_SIZE / 1024 / 1024 / 1024))
   echo "$(timestamp) $0: SD-Card size - ${SD_CARD_SIZE_GIGABYTES}GB found"
   if [ "$SD_CARD_SIZE" -gt $((MIN_SD_SIZE_IN_GB * 1024 * 1024 * 1024)) ]; then
